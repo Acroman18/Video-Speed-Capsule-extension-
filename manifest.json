@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Universal Smart Mini Capsule Overlay",
+  "version": "9.0.0",
+  "description": "Minimalist expanding hover pill with scrollable/clickable speed adjustments and dynamic remaining video duration calculation.",
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

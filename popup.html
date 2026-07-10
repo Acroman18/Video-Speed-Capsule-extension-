@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Universal Capsule UI Controller</title>
+    <style>
+        :root {
+            --bg: #090d16;
+            --surface: #131a26;
+            --surface-hover: #1e293b;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #64748b;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.25);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 14px;
+            background: var(--bg);
+            color: var(--text-main);
+            width: 190px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .status-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin: 0;
+        }
+
+        .status-text {
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 1px;
+            letter-spacing: 0.3px;
+            transition: color 0.2s ease;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #1e293b;
+            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #94a3b8;
+            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(56, 189, 248, 0.15);
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+            background-color: var(--accent);
+        }
+
+        .presets-title {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            margin-top: 12px;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
+        .preset-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .preset-btn {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            color: #cbd5e1;
+            padding: 6px 0;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s ease;
+        }
+
+        .preset-btn:hover {
+            background: var(--surface-hover);
+            color: var(--text-main);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Customize Sliders UI */
+        .config-row {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;
+        }
+
+        .config-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #cbd5e1;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .config-label span {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        input[type="range"] {
+    -webkit-appearance: none; /* For Chrome, Safari, and Opera */
+    appearance: none;         /* Standard property - clears the warning! */
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: #1e293b;
+    outline: none;
+}
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        
+        .disabled-state .preset-btn,
+        .disabled-state input[type="range"] {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="popup-card">
+        <div class="row">
+            <div class="status-info">
+                <span class="title">Extension</span>
+                <span class="status-text" id="status-label">ENABLED</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="toggle-extension" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        
+        <div class="presets-title">Configure Buttons</div>
+        
+        <div class="config-row">
+            <div class="config-label">Button 1: <span id="lbl-b1">1.00x</span></div>
+            <input type="range" id="slide-b1" min="0.5" max="3.0" step="0.05" value="1.0">
+        </div>
+
+        <div class="config-row">
+            <div class="config-label">Button 2: <span id="lbl-b2">1.50x</span></div>
+            <input type="range" id="slide-b2" min="0.5" max="3.0" step="0.05" value="1.5">
+        </div>
+
+        <div class="config-row">
+            <div class="config-label">Button 3: <span id="lbl-b3">2.00x</span></div>
+            <input type="range" id="slide-b3" min="0.5" max="3.0" step="0.05" value="2.0">
+        </div>
+
+        <div class="presets-title">Quick Presets</div>
+        <div class="preset-group">
+            <button class="preset-btn" id="btn-b1" data-idx="1">1.0x</button>
+            <button class="preset-btn" id="btn-b2" data-idx="2">1.5x</button>
+            <button class="preset-btn" id="btn-b3" data-idx="3">2.0x</button>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
