@@ -2,25 +2,53 @@ How to Install
 
 
 
-### Step 1: Download the Files
-Make sure you have all the extension files saved together in a single folder on your computer (e.g., a folder named `Video-Speed-Extension`). The folder should contain:
+# Installation Guide
+
+## Step 1: Download the Extension from GitHub
+
+1. Open the GitHub repository containing the extension.
+2. Click the green **Code** button.
+3. Select **Download ZIP**.
+4. Save the ZIP file to your computer.
+5. Right-click the downloaded ZIP file and choose **Extract All...**
+6. Choose a location to extract the files.
+7. Open the extracted folder. It should contain files such as:
+
 * `manifest.json`
 * `popup.html`
 * `popup.js`
 * `content.js`
 
-### Step 2: Open Extensions Page
-1. Open Google Chrome (or any Brave/Edge browser).
-2. Click the **three dots menu** in the top-right corner.
-3. Go to **Extensions** > **Manage Extensions** (or simply type `chrome://extensions` into your URL address bar and press Enter).
 
-### Step 3: Turn on Developer Mode
-In the top-right corner of the Extensions page, toggle the switch that says **Developer mode** to **ON**.
+---
 
-### Step 4: Load the Extension
-1. Click the **Load unpacked** button that appears in the top-left corner.
-2. Select the folder where you saved your extension files (the folder from Step 1).
-3. Click **Select Folder** (or Open).
+## Step 2: Open the Extensions Page
+
+1. Open Google Chrome, Microsoft Edge, Brave, or another browser.
+2. Open the Extensions page by entering the following in the address bar:
+
+* Chrome: `chrome://extensions`
+* Edge: `edge://extensions`
+* Brave: `brave://extensions`
+
+Alternatively, you can open the browser menu and navigate to **Extensions → Manage Extensions**.
+
+---
+
+## Step 3: Enable Developer Mode
+
+In the top-right corner of the Extensions page, enable **Developer mode**.
+
+---
+
+## Step 4: Load the Extension
+
+1. Click **Load unpacked**.
+2. Select the extracted extension folder (i.e. Speed and timer overlay (Ver. 9))
+3. Click **Select Folder** (or **Open**).
+
+The extension will now be installed and ready to use.
+
 
 
 
