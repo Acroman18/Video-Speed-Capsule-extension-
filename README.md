@@ -12,12 +12,6 @@ How to Install
 4. Save the ZIP file to your computer.
 5. Right-click the downloaded ZIP file and choose **Extract All...**
 6. Choose a location to extract the files.
-7. Open the extracted folder. It should contain files such as:
-
-* `manifest.json`
-* `popup.html`
-* `popup.js`
-* `content.js`
 
 
 ---
