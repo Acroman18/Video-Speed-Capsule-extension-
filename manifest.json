@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Universal Smart Mini Capsule Overlay",
+  "name": "Mini Capsule Overlay timer",
   "version": "9.0.0",
   "description": "Minimalist expanding hover pill with scrollable/clickable speed adjustments and dynamic remaining video duration calculation.",
   "permissions": [

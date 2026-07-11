@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const label = document.getElementById('status-label');
     const card = document.getElementById('popup-card');
 
+    const snapToggle = document.getElementById('toggle-snap');
+    const snapLabel = document.getElementById('snap-label');
+
     const sliders = {
         1: { input: document.getElementById('slide-b1'), lbl: document.getElementById('lbl-b1'), btn: document.getElementById('btn-b1') },
         2: { input: document.getElementById('slide-b2'), lbl: document.getElementById('lbl-b2'), btn: document.getElementById('btn-b2') },
@@ -12,12 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load configurations from local storage
     chrome.storage.local.get({
         enabled: true,
+        snapEnabled: true,
         btn1_speed: 1.0,
         btn2_speed: 1.5,
         btn3_speed: 2.0
     }, (data) => {
         toggle.checked = data.enabled;
         updateUIState(data.enabled);
+
+        snapToggle.checked = data.snapEnabled;
+        updateSnapUIState(data.snapEnabled);
 
         setupSlider(1, data.btn1_speed);
         setupSlider(2, data.btn2_speed);
@@ -32,36 +39,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function setupSlider(index, value) {
-        const target = sliders[index];
-        target.input.value = value;
-        target.lbl.innerText = parseFloat(value).toFixed(2) + 'x';
-        target.btn.innerText = parseFloat(value).toFixed(1) + 'x';
+    // Handle auto snap toggle switch modification
+    snapToggle.addEventListener('change', () => {
+        const isSnapEnabled = snapToggle.checked;
+        chrome.storage.local.set({ snapEnabled: isSnapEnabled }, () => {
+            updateSnapUIState(isSnapEnabled);
+        });
+    });
 
-        // Listen for live slider dragging
-        target.input.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            target.lbl.innerText = val.toFixed(2) + 'x';
-            target.btn.innerText = val.toFixed(1) + 'x';
+    function setupSlider(index, initialValue) {
+        const slider = sliders[index];
+        slider.input.value = initialValue;
+        slider.lbl.innerText = parseFloat(initialValue).toFixed(2) + 'x';
+
+        slider.input.addEventListener('input', () => {
+            const val = parseFloat(slider.input.value).toFixed(2);
+            slider.lbl.innerText = val + 'x';
             
-            const saveObj = {};
-            saveObj[`btn${index}_speed`] = val;
-            
-            // Save to storage AND broadcast live to the active web tab instantly
-            chrome.storage.local.set(saveObj, () => {
-                broadcastSettings();
+            const key = `btn${index}_speed`;
+            chrome.storage.local.set({ [key]: parseFloat(val) }, () => {
+                broadcastButtonRebuild();
             });
         });
 
-        // Handle preset button click
-        target.btn.addEventListener('click', () => {
-            const currentSpeed = parseFloat(target.input.value);
+        slider.btn.addEventListener('click', () => {
+            if (!toggle.checked) return;
+            const currentSpeed = parseFloat(slider.input.value);
             sendSpeedToActiveTab(currentSpeed);
         });
     }
 
-    // Direct real-time pipeline to push fresh values to content script
-    function broadcastSettings() {
+    function broadcastButtonRebuild() {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs[0]?.id) {
                 chrome.tabs.sendMessage(tabs[0].id, {
@@ -98,5 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
         label.style.color = isEnabled ? '#38bdf8' : '#64748b';
         if (isEnabled) card.classList.remove('disabled-state');
         else card.classList.add('disabled-state');
+    }
+
+    function updateSnapUIState(isSnapEnabled) {
+        snapLabel.innerText = isSnapEnabled ? 'ENABLED' : 'DISABLED';
+        snapLabel.style.color = isSnapEnabled ? '#38bdf8' : '#64748b';
     }
 });

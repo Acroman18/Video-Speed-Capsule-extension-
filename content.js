@@ -175,14 +175,24 @@
 
         document.addEventListener('mouseup', () => {
             if (isDragging) {
-                const pad = 5, rect = box.getBoundingClientRect();
-                const snapLeft = rect.left + (rect.width / 2) < window.innerWidth / 2;
-                const snapTop = rect.top + (rect.height / 2) < window.innerHeight / 2;
-                box.style.transition = 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
-                box.style.top = snapTop ? `${pad}px` : `${window.innerHeight - rect.height - pad}px`;
-                if (snapLeft) { lastSnapSide = 'left'; box.style.right = 'auto'; box.style.left = `${pad}px`; }
-                else { lastSnapSide = 'right'; box.style.left = 'auto'; box.style.right = `${pad}px`; }
-                localStorage.setItem('pw_snap_side', lastSnapSide); localStorage.setItem('pw_pos_x', `${pad}px`); localStorage.setItem('pw_pos_y', box.style.top);
+                // Check if snap is enabled from chrome sync storage before computing snap behaviors
+                chrome.storage.local.get({ snapEnabled: true }, (data) => {
+                    if (data.snapEnabled) {
+                        const pad = 5, rect = box.getBoundingClientRect();
+                        const snapLeft = rect.left + (rect.width / 2) < window.innerWidth / 2;
+                        const snapTop = rect.top + (rect.height / 2) < window.innerHeight / 2;
+                        box.style.transition = 'all 0.3s cubic-bezier(0.25, 1, 0.5, 1)';
+                        box.style.top = snapTop ? `${pad}px` : `${window.innerHeight - rect.height - pad}px`;
+                        if (snapLeft) { lastSnapSide = 'left'; box.style.right = 'auto'; box.style.left = `${pad}px`; }
+                        else { lastSnapSide = 'right'; box.style.left = 'auto'; box.style.right = `${pad}px`; }
+                        localStorage.setItem('pw_snap_side', lastSnapSide); localStorage.setItem('pw_pos_x', `${pad}px`); localStorage.setItem('pw_pos_y', box.style.top);
+                    } else {
+                        // Keep exactly where dropping without calculating adjustments
+                        localStorage.setItem('pw_snap_side', 'left');
+                        localStorage.setItem('pw_pos_x', box.style.left);
+                        localStorage.setItem('pw_pos_y', box.style.top);
+                    }
+                });
             }
             isDragging = false; box.style.cursor = 'move';
         });
