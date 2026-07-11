@@ -48,6 +48,10 @@ The extension will now be installed and ready to use.
 
 ## 🛠️ How to Use
 
+---> Pin the extension and left click on it to customize it.
+
+---> Hover ur mouse on the mouse-like icon and scroll up and down.
+
 1. **Open a Video:** Go to any website with a video player (like YouTube) and hover your mouse over the screen.
 
 2. **Reveal Controls:** Move your mouse over the floating capsule overlay to smoothly slide open the preset drawer.
