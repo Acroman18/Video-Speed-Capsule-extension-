@@ -19,24 +19,24 @@
         
         /* Updated button margins and padding for better spacing */
         .pw-ctrl-btn { 
-            background: rgba(255, 255, 255, 0.05); 
+            background: rgba(2, 2, 2, 0.05); 
             border: 1px solid rgba(255, 255, 255, 0.12); 
-            color: #A9B0BC; 
+            color: #E8E8E8; 
             padding: 3px 12px; 
             border-radius: 20px; 
             cursor: pointer; 
             font-size: 12px; 
-            font-weight: bold; 
+            font-weight: normal; 
             margin: 0 4px; 
-            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1); 
+            transition: all 0.s cubic-bezier(0.25, 1, 0.5, 1); 
             font-family: inherit; 
             white-space: nowrap; 
         }
-        .pw-ctrl-btn:hover { background: rgba(255, 255, 255, 0.10); color: #F5F7FA; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-        .pw-ctrl-btn.active { background: rgba(56, 189, 248, 0.18); color: #7DD3FC; border-color: rgba(56, 189, 248, 0.35); box-shadow: 0 0 8px rgba(56, 189, 248, 0.2); }
+        .pw-ctrl-btn:hover { background: rgba(2, 2, 2, 0.10); color: #F5F7FA; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+        .pw-ctrl-btn.active { background: rgba(150, 255, 150, 0.3); color: #FFFFFF; border-color: rgba(109, 247, 109, 0.4); box-shadow: 0 0 8px rgba(255, 255, 255, 0.25); }
         .pw-divider { width: 1px; height: 16px; background: rgba(255, 255, 255, 0.12); margin: 0 12px; transition: opacity 0.2s ease; }
-        .pw-speed-text { color: #F5F7FA; font-weight: 800; }
-        .pw-timer-text { color: #A9B0BC; font-weight: bold; }
+        .pw-speed-text { color: #F5F7FA; font-weight: 900; }
+        .pw-timer-text { color: #FFFFFF; font-weight: bold; }
     `;
     document.head.appendChild(style);
 
@@ -114,9 +114,9 @@
         box = document.createElement('div');
         Object.assign(box.style, {
             position: 'fixed', top: savedY, left: savedX, height: '38px', borderRadius: '20px',
-            background: 'rgba(18, 18, 22, 0.55)', backdropFilter: 'blur(22px) saturate(180%)', WebkitBackdropFilter: 'blur(22px) saturate(180%)',
+            background: 'rgba(18, 18, 22, 0.55)', backdropFilter: 'blur(8px) saturate(260%)', WebkitBackdropFilter: 'blur(8px) saturate(260%)',
             border: '1px solid rgba(255, 255, 255, 0.12)', color: '#F5F7FA', fontSize: '14px',
-            fontFamily: '"Segoe UI", Roboto, sans-serif', fontWeight: 'bold', zIndex: '99999',
+            fontFamily: '"Segoe UI", Roboto, sans-serif', fontWeight: 'normal', zIndex: '99999',
             boxShadow: '0 12px 40px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
             display: 'flex', alignItems: 'center', padding: '0 16px', overflow: 'hidden', userSelect: 'none', cursor: 'move'
         });
@@ -201,7 +201,7 @@
             scrollIcon.style.width = '16px'; scrollIcon.style.opacity = '1';
             
             // Dynamic max-width ceiling accommodates margins snugly
-            iconDrawer.style.maxWidth = '260px'; 
+            iconDrawer.style.maxWidth = '255px'; 
             iconDrawer.style.marginLeft = '12px'; 
             iconDrawer.style.opacity = '1';
         });
@@ -222,7 +222,7 @@
         function render() {
             let remaining = video.duration - video.currentTime;
             let currentSpeed = video.playbackRate;
-            textContainer.innerHTML = `<span class="pw-speed-text">⚡ ${currentSpeed.toFixed(2)}x</span> <span class="pw-timer-text">• ${formatTime(remaining / currentSpeed)}</span>`;
+            textContainer.innerHTML = `<span class="pw-speed-text">⪢ ${currentSpeed.toFixed(2)}x</span> <span class="pw-timer-text">• ${formatTime(remaining / currentSpeed)}</span>`;
         }
 
         activeTimeUpdate = render;
